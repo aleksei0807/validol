@@ -1,0 +1,42 @@
+{
+  "name": "validol",
+  "version": "0.0.1",
+  "description": "util for validation object at not defined props",
+  "main": "./lib/index.js",
+  "scripts": {
+    "test": "mocha ./tests",
+	"build": "babel src --out-dir lib",
+	"watch": "babel src --watch --out-dir lib"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aleksei0807/validol.git"
+  },
+  "keywords": [
+    "validation",
+    "object",
+    "objects",
+    "undefined",
+    "not",
+    "defined",
+    "property",
+    "propertys",
+    "props"
+  ],
+  "author": "Aleksei Schurak",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/aleksei0807/validol/issues"
+  },
+  "homepage": "https://github.com/aleksei0807/validol#readme",
+  "devDependencies": {
+    "babel-cli": "^6.11.4",
+    "babel-preset-es2015": "^6.9.0",
+    "babel-preset-stage-0": "^6.5.0",
+    "babel-preset-stage-1": "^6.5.0",
+    "babel-preset-stage-2": "^6.11.0",
+    "babel-preset-stage-3": "^6.11.0",
+    "chai": "^3.5.0",
+    "mocha": "^2.5.3"
+  }
+}
