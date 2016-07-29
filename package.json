@@ -1,7 +1,7 @@
 {
   "name": "validol",
   "version": "0.0.1",
-  "description": "util for validation object at not defined props",
+  "description": "util for validation that object has defined props",
   "main": "./lib/index.js",
   "scripts": {
     "test": "mocha ./tests",

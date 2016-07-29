@@ -16,7 +16,7 @@ module.exports = function validol(object, props = '') {
 
 	if (object === undefined || object === null || (typeof props !== 'object' && typeof props !== 'string') || props === null) {
 		result = {
-			error: new Error('not valid params!'),
+			error: new Error('arguments are not valid!'),
 			result: false,
 			all: false,
 			any: false
