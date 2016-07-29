@@ -14,15 +14,26 @@ module.exports = function validol(object, props = '') {
 		any: false
 	};
 
-	if (object === undefined || object === null || (typeof props !== 'object' && typeof props !== 'string') || props === null) {
+	if (object === undefined || object === null) {
 		result = {
-			error: new Error('arguments are not valid!'),
+			error: new Error('object argument is not valid!'),
 			result: false,
 			all: false,
 			any: false
 		};
 		return result;
 	}
+
+	if ((typeof props !== 'object' && typeof props !== 'string') || props === null) {
+		result = {
+			error: new Error('props argument is not valid!'),
+			result: false,
+			all: false,
+			any: false
+		};
+		return result;
+	}
+
 	if (props === '') {
 		result = {
 			error: false,

@@ -1,23 +1,24 @@
 var assert = require('chai').assert;
 var validol = require('../lib/index.js');
-const invalidArgsMsg = 'arguments are not valid!';
+const invalidObjectArgMsg = 'object argument is not valid!';
+const invalidPropsArgMsg = 'props argument is not valid!';
 
 describe('validol', function() {
-	it(`should return object with error.message "${invalidArgsMsg}" when called with empty arguments`, function() {
+	it(`should return object with error.message "${invalidObjectArgMsg}" when called with empty arguments`, function() {
 		assert.isTrue(validol().error instanceof Error);
-		assert.equal(validol().error.message, invalidArgsMsg);
+		assert.equal(validol().error.message, invalidObjectArgMsg);
 	});
-	it(`should return object with error.message "${invalidArgsMsg}" when object argument === null`, function() {
+	it(`should return object with error.message "${invalidObjectArgMsg}" when object argument === null`, function() {
 		assert.isTrue(validol(null).error instanceof Error);
-		assert.equal(validol(null).error.message, invalidArgsMsg);
+		assert.equal(validol(null).error.message, invalidObjectArgMsg);
 	});
-	it(`should return object with error.message "${invalidArgsMsg}" when typeof props !== string || object`, function() {
+	it(`should return object with error.message "${invalidPropsArgMsg}" when typeof props !== string || object`, function() {
 		assert.isTrue(validol({}, 1).error instanceof Error);
-		assert.equal(validol({}, 1).error.message, invalidArgsMsg);
+		assert.equal(validol({}, 1).error.message, invalidPropsArgMsg);
 		assert.isTrue(validol({}, true).error instanceof Error);
-		assert.equal(validol({}, true).error.message, invalidArgsMsg);
+		assert.equal(validol({}, true).error.message, invalidPropsArgMsg);
 		assert.isTrue(validol({}, null).error instanceof Error);
-		assert.equal(validol({}, null).error.message, invalidArgsMsg);
+		assert.equal(validol({}, null).error.message, invalidPropsArgMsg);
 	});
 	it('should return object with error === false, all === false, any === true when called with empty props argument', function() {
 		assert.isFalse(validol({}).error);
