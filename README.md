@@ -15,4 +15,5 @@ Validol is an util that validates that object has defined props.
 	result: Object,
 	all: Bool,
 	any: Bool
-}```
+}
+```
