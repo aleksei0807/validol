@@ -21,6 +21,17 @@ describe('validol', function() {
 	it('should return error = false, all = false, any = true when is not props', function() {
 		assert.isFalse(validol({}).error);
 		assert.isFalse(validol({}).all);
-		assert.isTrue(validol({}).any);
+		assert.isFalse(validol({}).any);
+	});
+	it('should return error = false, all = true, any = true when is props = "myProp" and isset object.myProp', function() {
+		assert.isFalse(validol({myProp: 1}, 'myProp').error);
+		assert.isTrue(validol({myProp: 1}, 'myProp').all);
+		assert.isTrue(validol({myProp: 1}, 'myProp').any);
+	});
+	it('should return error = false, all = false, any = false, result[props] = undefined when is props = "myProp" and not isset object.myProp', function() {
+		assert.isFalse(validol({}, 'myProp').error);
+		assert.isFalse(validol({}, 'myProp').all);
+		assert.isFalse(validol({}, 'myProp').any);
+		assert.equal(validol({}, 'myProp').result.myProp, undefined);
 	});
 });
