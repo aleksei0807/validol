@@ -30,7 +30,7 @@ function validationArrayProps(object, props) {
 	return result;
 }
 
-type Props = string|Array<string|Object>|Object;
+type Props = string | Array<string | Object> | Object;
 type Result = {
 	error: boolean | Error,
 	result: Object,
