@@ -27,6 +27,7 @@ module.exports = function validol(object, props = '') {
 	if (props === '') {
 		return result;
 	}
+
 	if (typeof props === 'string') {
 		if(validationProp(object, props)) {
 			result.all = true;
@@ -37,4 +38,7 @@ module.exports = function validol(object, props = '') {
 			return result;
 		}
 	}
+
+	result.error = new Error('undeclared error');
+	return result;
 };
