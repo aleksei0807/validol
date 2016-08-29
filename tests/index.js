@@ -29,11 +29,58 @@ describe('validol', function() {
 		assert.isFalse(validol({myProp: 1}, 'myProp').error);
 		assert.isTrue(validol({myProp: 1}, 'myProp').all);
 		assert.isTrue(validol({myProp: 1}, 'myProp').any);
+		assert.equal(validol({myProp: 1}, 'myProp').result.myProp, 1);
 	});
 	it('should return object with error === false, all === false, any === false, result[props] === undefined when props argument === "myProp" and object.myProp is not set', function() {
 		assert.isFalse(validol({}, 'myProp').error);
 		assert.isFalse(validol({}, 'myProp').all);
 		assert.isFalse(validol({}, 'myProp').any);
 		assert.equal(validol({}, 'myProp').result.myProp, undefined);
+	});
+	it('should return object with error === false, all === true, any === true when props argument === ["myProp", "myProp2"] and object.myProp and object.myProp2 is set', function() {
+		assert.isFalse(validol({
+			myProp: 1,
+			myProp: 2
+		}, 'myProp').error);
+		assert.isTrue(validol({
+			myProp: 1,
+			myProp: 2
+		}, 'myProp').all);
+		assert.isTrue(validol({
+			myProp: 1,
+			myProp: 2
+		}, 'myProp').any);
+		assert.equal(validol({
+			myProp: 1,
+			myProp: 2
+		}, 'myProp').result.myProp, 1);
+		assert.equal(validol({
+			myProp: 1,
+			myProp: 2
+		}, 'myProp').result.myProp2, 2);
+	});
+	it('should return object with error === false, all === false, any === true when props argument === ["myProp", "myProp2"] and object.myProp is set and object.myProp2 is not set', function() {
+		assert.isFalse(validol({
+			myProp: 1
+		}, 'myProp').error);
+		assert.isFalse(validol({
+			myProp: 1
+		}, 'myProp').all);
+		assert.isTrue(validol({
+			myProp: 1
+		}, 'myProp').any);
+		assert.equal(validol({
+			myProp: 1
+		}, 'myProp').result.myProp, 1);
+		assert.equal(validol({
+			myProp: 1
+		}, 'myProp').result.myProp2, undefined);
+	});
+	it('should return object with error === false, all === false, any === false, result[props] === undefined when props argument === ["myProp", "myProp2"] and object.myProp and object.myProp2 is not set', function() {
+		assert.isFalse(validol({}, 'myProp').error);
+		assert.isFalse(validol({}, 'myProp').all);
+		assert.isFalse(validol({}, 'myProp').any);
+		assert.equal(validol({}, 'myProp').result.myProp, undefined);
+		assert.equal(validol({}, 'myProp').result.myProp2, undefined);
 	});
 });
