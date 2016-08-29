@@ -15,50 +15,25 @@ module.exports = function validol(object, props = '') {
 	};
 
 	if (object === undefined || object === null) {
-		result = {
-			error: new Error('object argument is not valid!'),
-			result: false,
-			all: false,
-			any: false
-		};
+		result.error = new Error('object argument is not valid!');
 		return result;
 	}
 
 	if ((typeof props !== 'object' && typeof props !== 'string') || props === null) {
-		result = {
-			error: new Error('props argument is not valid!'),
-			result: false,
-			all: false,
-			any: false
-		};
+		result.error = new Error('props argument is not valid!');
 		return result;
 	}
 
 	if (props === '') {
-		result = {
-			error: false,
-			result: object,
-			all: false,
-			any: false
-		};
 		return result;
 	}
 	if (typeof props === 'string') {
 		if(validationProp(object, props)) {
-			result = {
-				error: false,
-				result: object,
-				all: true,
-				any: true
-			};
+			result.all = true;
+			result.any = true;
 			return result;
 		} else {
-			result = {
-				error: false,
-				result: {...object, ...{[props]: undefined}},
-				all: false,
-				any: false
-			};
+			result.result = {...object, ...{[props]: undefined}};
 			return result;
 		}
 	}
