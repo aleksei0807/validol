@@ -6,6 +6,26 @@ function validationProp(object, prop) {
 	}
 }
 
+function validationArrayProps(object, props) {
+	let result = {
+		error: false,
+		result: object,
+		all: true,
+		any: false
+	};
+
+	props.map(prop => {
+		if(validationProp(object, prop)) {
+			result.any = true;
+		} else {
+			result.result = {...object, ...{[props]: undefined}};
+			result.all = false;
+		}
+	});
+
+	return result;
+}
+
 module.exports = function validol(object, props = '') {
 	let result = {
 		error: false,
@@ -37,6 +57,10 @@ module.exports = function validol(object, props = '') {
 			result.result = {...object, ...{[props]: undefined}};
 			return result;
 		}
+	}
+
+	if (props instanceof Array) {
+		return validationArrayProps(object, props);
 	}
 
 	result.error = new Error('undeclared error');
