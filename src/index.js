@@ -1,3 +1,5 @@
+// @flow
+
 function validationProp(object, prop) {
 	if (object[prop] !== undefined) {
 		return true;
@@ -15,19 +17,29 @@ function validationArrayProps(object, props) {
 	};
 
 	props.map(prop => {
-		if(validationProp(object, prop)) {
-			result.any = true;
-		} else {
-			result.result = {...object, ...{[props]: undefined}};
-			result.all = false;
+		if (typeof prop === 'string') {
+			if(validationProp(object, prop)) {
+				result.any = true;
+			} else {
+				result.result = {...object, ...{[prop]: undefined}};
+				result.all = false;
+			}
 		}
 	});
 
 	return result;
 }
 
-module.exports = function validol(object, props = '') {
-	let result = {
+type Props = string|Array<string|Object>|Object;
+type Result = {
+	error: boolean | Error,
+	result: Object,
+	all: boolean,
+	any: boolean
+}
+
+module.exports = function validol(object: Object, props: Props = ''): Result {
+	let result: Result = {
 		error: false,
 		result: object,
 		all: false,
