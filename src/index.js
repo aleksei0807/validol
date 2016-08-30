@@ -1,5 +1,13 @@
 // @flow
 
+type Props = string | number | Array<string | Object> | Object;
+type Result = {
+	error: boolean | Error,
+	result: Object,
+	all: boolean,
+	any: boolean
+}
+
 function validationProp(object, prop) {
 	if (object[prop] !== undefined) {
 		return true;
@@ -25,17 +33,60 @@ function validationArrayProps(object, props) {
 				result.all = false;
 			}
 		}
+		//if object
 	});
 
 	return result;
 }
 
-type Props = string | Array<string | Object> | Object;
-type Result = {
-	error: boolean | Error,
-	result: Object,
-	all: boolean,
-	any: boolean
+function validationObjectProps(object, props, propsName = 'props'): Result {
+	let result: Result = {
+		error: false,
+		result: object,
+		all: true,
+		any: false
+	};
+
+	for (let key in props) {
+		if (props.hasOwnProperty(key)) {
+			if (validationProp(object, key)) {
+				result.any = true;
+				if (!props[key] || (typeof props[key] !== 'string' && typeof props[key] !== 'number' && typeof props[key] !== 'object') || props[key] === null) {
+					result.all = false;
+					result.error = new Error(`${propsName}.${key} argument is not valid!`);
+					continue;
+				}
+				if (props[key] === '') {
+					result.all = false;
+					continue;
+				}
+				if (typeof props[key] === 'string' || typeof props[key] === 'number') {
+					if (object[key] === undefined || object[key] === null) {
+						result.all = false;
+						result.result[key] = Object(object[key]);
+						result.result[key][props[key]] = undefined;
+						continue;
+					} else {
+						if(validationProp(object[key], props[key])) {
+							result.any = true;
+							continue;
+						} else {
+							result.all = false;
+							result.result[key] = Object(object[key]);
+							result.result[key][props[key]] = undefined;
+							continue;
+						}
+					}
+				}
+				//if array or object
+			} else {
+				result.all = false;
+				result.result[key] = Object();
+				result.result[key][props[key]] = undefined;
+			}
+		}
+	}
+	return result;
 }
 
 module.exports = function validol(object: Object, props: Props = ''): Result {
@@ -51,7 +102,7 @@ module.exports = function validol(object: Object, props: Props = ''): Result {
 		return result;
 	}
 
-	if ((typeof props !== 'object' && typeof props !== 'string') || props === null) {
+	if ((typeof props !== 'object' && typeof props !== 'string' && typeof props !== 'number') || props === null) {
 		result.error = new Error('props argument is not valid!');
 		return result;
 	}
@@ -60,7 +111,7 @@ module.exports = function validol(object: Object, props: Props = ''): Result {
 		return result;
 	}
 
-	if (typeof props === 'string') {
+	if (typeof props === 'string' || typeof props === 'number') {
 		if(validationProp(object, props)) {
 			result.all = true;
 			result.any = true;
@@ -73,6 +124,11 @@ module.exports = function validol(object: Object, props: Props = ''): Result {
 
 	if (props instanceof Array) {
 		return validationArrayProps(object, props);
+	}
+
+	if (typeof props === 'object' && !(props instanceof Array)) {
+		result = validationObjectProps(object, props);
+		return result;
 	}
 
 	result.error = new Error('undeclared error');
