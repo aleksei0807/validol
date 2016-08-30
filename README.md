@@ -5,7 +5,7 @@ Validol is an util that validates that object has defined props.
 ## Arguments
 
 - object `Object`
-- props `String || Object || Array`
+- props `String || Number || Object || Array`
 
 ## Result
 
