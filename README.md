@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/aleksei0807/validol.svg?branch=master)](https://travis-ci.org/aleksei0807/validol)
+[![Coverage Status](https://coveralls.io/repos/github/aleksei0807/validol/badge.svg?branch=master)](https://coveralls.io/github/aleksei0807/validol?branch=master)
 # Validol
 
 Validol is an util that validates that object has defined props.
