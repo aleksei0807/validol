@@ -15,7 +15,7 @@ function validationProp(object, prop) {
 	return false;
 }
 
-function validationArrayProps(object, props) {
+function validationArrayProps(object, props, propsName = 'props') {
 	const result = {
 		error: false,
 		result: object,
@@ -33,7 +33,11 @@ function validationArrayProps(object, props) {
 			}
 		}
 		if (typeof prop === 'object' && prop !== null) {
-			const localResult = validationObjectProps(result.result, prop);
+			const localResult = validationObjectProps(
+				result.result,
+				prop,
+				propsName
+			);
 			if (localResult.all === false) {
 				result.all = false;
 			}
@@ -109,7 +113,11 @@ function validationObjectProps(object, props, propsName = 'props'): Result {
 							result.result[key] = Object(object[key]);
 						}
 					}
-					const localResult = validationArrayProps(result.result[key], props[key]);
+					const localResult = validationArrayProps(
+						result.result[key],
+						props[key],
+						`${propsName}.${key}`
+					);
 					if (localResult.error !== false) {
 						result.error = localResult.error;
 						return false;
@@ -134,7 +142,11 @@ function validationObjectProps(object, props, propsName = 'props'): Result {
 							result.result[key] = Object(object[key]);
 						}
 					}
-					const localResult = validationObjectProps(result.result[key], props[key]);
+					const localResult = validationObjectProps(
+						result.result[key],
+						props[key],
+						`${propsName}.${key}`
+					);
 					if (localResult.all === false) {
 						result.all = false;
 					}
@@ -156,12 +168,20 @@ function validationObjectProps(object, props, propsName = 'props'): Result {
 					}
 				}
 				if (props[key] instanceof Array) {
-					result.result[key] = validationArrayProps(result.result[key], props[key]).result;
+					result.result[key] = validationArrayProps(
+						result.result[key],
+						props[key],
+						`${propsName}.${key}`
+					).result;
 					return true;
 				}
 
 				if (typeof props[key] === 'object' && props[key] !== null) {
-					const localResult = validationObjectProps(result.result[key], props[key]);
+					const localResult = validationObjectProps(
+						result.result[key],
+						props[key],
+						`${propsName}.${key}`
+					);
 					if (localResult.all === false) {
 						result.all = false;
 					}
