@@ -32,7 +32,16 @@ function validationArrayProps(object, props) {
 				result.all = false;
 			}
 		}
-		// if object
+		if (typeof prop === 'object' && prop !== null) {
+			const localResult = validationObjectProps(result.result, prop);
+			if (localResult.all === false) {
+				result.all = false;
+			}
+			if (localResult.any === true) {
+				result.any = true;
+			}
+			result.result = localResult.result;
+		}
 
 		return true;
 	});
@@ -69,7 +78,7 @@ function validationObjectProps(object, props, propsName = 'props'): Result {
 
 				if (typeof props[key] === 'string' || typeof props[key] === 'number') {
 					if (typeof result.result[key] !== 'object'
-					|| (result.result[key] !== object[key] && result.result[key] !== undefined)
+					|| result.result[key] !== object[key]
 					|| result.result[key] === null) {
 						result.all = false;
 						if (object[key] === null || object[key] === undefined) {
@@ -115,7 +124,26 @@ function validationObjectProps(object, props, propsName = 'props'): Result {
 					return true;
 				}
 
-				// if object
+				if (typeof props[key] === 'object' && props[key] !== null) {
+					if (typeof result.result[key] !== 'object'
+					|| result.result[key] !== object[key]
+					|| result.result[key] === null) {
+						if (object[key] === null || object[key] === undefined) {
+							result.result[key] = Object();
+						} else {
+							result.result[key] = Object(object[key]);
+						}
+					}
+					const localResult = validationObjectProps(result.result[key], props[key]);
+					if (localResult.all === false) {
+						result.all = false;
+					}
+					if (localResult.any === true) {
+						result.any = true;
+					}
+					result.result[key] = localResult.result;
+					return true;
+				}
 			} else {
 				result.all = false;
 				if (typeof result.result[key] !== 'object'
@@ -131,7 +159,18 @@ function validationObjectProps(object, props, propsName = 'props'): Result {
 					result.result[key] = validationArrayProps(result.result[key], props[key]).result;
 					return true;
 				}
-				// if object
+
+				if (typeof props[key] === 'object' && props[key] !== null) {
+					const localResult = validationObjectProps(result.result[key], props[key]);
+					if (localResult.all === false) {
+						result.all = false;
+					}
+					if (localResult.any === true) {
+						result.any = true;
+					}
+					result.result[key] = localResult.result;
+					return true;
+				}
 
 				return true;
 			}
@@ -141,7 +180,7 @@ function validationObjectProps(object, props, propsName = 'props'): Result {
 	return result;
 }
 
-module.exports = function validol(object: Object, props: Props = ''): Result {
+function validol(object: Object, props: Props = ''): Result {
 	let result: Result = {
 		error: false,
 		result: object,
@@ -172,7 +211,7 @@ module.exports = function validol(object: Object, props: Props = ''): Result {
 			result.any = true;
 			return result;
 		}
-		result.result = { ...object, ...{ [props]: undefined } };
+		result.result[props] = undefined;
 		return result;
 	}
 
@@ -182,10 +221,11 @@ module.exports = function validol(object: Object, props: Props = ''): Result {
 
 	if (typeof props === 'object' && !(props instanceof Array)) {
 		result = validationObjectProps(object, props);
-		// console.log(result);
 		return result;
 	}
 
 	result.error = new Error('undeclared error');
 	return result;
-};
+}
+
+module.exports = validol;

@@ -279,4 +279,336 @@ describe('validol', function() {
 		assert.equal(validol({}, {myProp: ["myProp2", "myProp3"]}).result.myProp.myProp2, undefined);
 		assert.equal(validol({}, {myProp: ["myProp2", "myProp3"]}).result.myProp.myProp3, undefined);
 	});
+
+	it('should return object with error === false, all === true, any === true when props argument === {myProp: [{myProp2: "myProp4"}, "myProp3"]} and object.myProp and object.myProp.myProp2 and object.myProp.myProp3 and object.myProp2.myProp4 is set', function() {
+		assert.isFalse(validol({
+			myProp: {
+				myProp2: {
+					myProp4: 4
+				},
+				myProp3: 3
+			}
+		}, {myProp: [{myProp2: "myProp4"}, "myProp3"]}).error);
+		assert.isTrue(validol({
+			myProp: {
+				myProp2: {
+					myProp4: 4
+				},
+				myProp3: 3
+			}
+		}, {myProp: [{myProp2: "myProp4"}, "myProp3"]}).all);
+		assert.isTrue(validol({
+			myProp: {
+				myProp2: {
+					myProp4: 4
+				},
+				myProp3: 3
+			}
+		}, {myProp: [{myProp2: "myProp4"}, "myProp3"]}).any);
+		assert.equal(validol({
+			myProp: {
+				myProp2: {
+					myProp4: 4
+				},
+				myProp3: 3
+			}
+		}, {myProp: [{myProp2: "myProp4"}, "myProp3"]}).result.myProp.myProp2.myProp4, 4);
+		assert.equal(validol({
+			myProp: {
+				myProp2: {
+					myProp4: 4
+				},
+				myProp3: 3
+			}
+		}, {myProp: [{myProp2: "myProp4"}, "myProp3"]}).result.myProp.myProp3, 3);
+	});
+	it('should return object with error === false, all === false, any === true when props argument === {myProp: [{myProp2: "myProp4"}, "myProp3"]} and object.myProp and object.myProp.myProp2 and object.myProp.myProp3 is set and object.myProp.myProp2.myProp4 is not set', function() {
+		assert.isFalse(validol({
+			myProp: {
+				myProp2: 2,
+				myProp3: 3
+			}
+		}, {myProp: [{myProp2: "myProp4"}, "myProp3"]}).error);
+		assert.isFalse(validol({
+			myProp: {
+				myProp2: 2,
+				myProp3: 3
+			}
+		}, {myProp: [{myProp2: "myProp4"}, "myProp3"]}).all);
+		assert.isTrue(validol({
+			myProp: {
+				myProp2: 2,
+				myProp3: 3
+			}
+		}, {myProp: [{myProp2: "myProp4"}, "myProp3"]}).any);
+		assert.equal(validol({
+			myProp: {
+				myProp2: 2,
+				myProp3: 3
+			}
+		}, {myProp: [{myProp2: "myProp4"}, "myProp3"]}).result.myProp.myProp2.myProp4, undefined);
+		assert.equal(validol({
+			myProp: {
+				myProp2: 2,
+				myProp3: 3
+			}
+		}, {myProp: [{myProp2: "myProp4"}, "myProp3"]}).result.myProp.myProp3, 3);
+	});
+	it('should return object with error === false, all === false, any === true when props argument === {myProp: [{myProp2: "myProp4"}, "myProp3"]} and object.myProp is set and object.myProp.myProp2 is not set and object.myProp.myProp3 is not set and object.myProp.myProp2.myProp4 is not set', function() {
+		assert.isFalse(validol({
+			myProp: 1
+		}, {myProp: [{myProp2: "myProp4"}, "myProp3"]}).error);
+		assert.isFalse(validol({
+			myProp: 1
+		}, {myProp: [{myProp2: "myProp4"}, "myProp3"]}).all);
+		assert.isTrue(validol({
+			myProp: 1
+		}, {myProp: [{myProp2: "myProp4"}, "myProp3"]}).any);
+		assert.equal(validol({
+			myProp: 1
+		}, {myProp: [{myProp2: "myProp4"}, "myProp3"]}).result.myProp, 1);
+		assert.equal(validol({
+			myProp: 1
+		}, {myProp: [{myProp2: "myProp4"}, "myProp3"]}).result.myProp.myProp2.myProp4, undefined);
+		assert.equal(validol({
+			myProp: 1
+		}, {myProp: [{myProp2: "myProp4"}, "myProp3"]}).result.myProp.myProp3, undefined);
+	});
+	it('should return object with error === false, all === false, any === true when props argument === {myProp: [{myProp2: "myProp4"}, "myProp3"]} and object.myProp === undefined and object.myProp.myProp2 is not set and object.myProp.myProp3 is not set and object.myProp.myProp2.myProp4 is not set', function() {
+		assert.isFalse(validol({
+			myProp: undefined
+		}, {myProp: [{myProp2: "myProp4"}, "myProp3"]}).error);
+		assert.isFalse(validol({
+			myProp: undefined
+		}, {myProp: [{myProp2: "myProp4"}, "myProp3"]}).all);
+		assert.isFalse(validol({
+			myProp: undefined
+		}, {myProp: [{myProp2: "myProp4"}, "myProp3"]}).any);
+		assert.equal(validol({
+			myProp: undefined
+		}, {myProp: [{myProp2: "myProp4"}, "myProp3"]}).result.myProp.myProp2.myProp4, undefined);
+		assert.equal(validol({
+			myProp: undefined
+		}, {myProp: [{myProp2: "myProp4"}, "myProp3"]}).result.myProp.myProp3, undefined);
+	});
+	it('should return object with error === false, all === false, any === true when props argument ===  {myProp: [{myProp2: "myProp4"}, "myProp3"]} and object.myProp === null and object.myProp.myProp2 is not set and object.myProp.myProp3 is not set and object.myProp.myProp2.myProp4 is not set', function() {
+		assert.isFalse(validol({
+			myProp: null
+		}, {myProp: [{myProp2: "myProp4"}, "myProp3"]}).error);
+		assert.isFalse(validol({
+			myProp: null
+		}, {myProp: [{myProp2: "myProp4"}, "myProp3"]}).all);
+		assert.isTrue(validol({
+			myProp: null
+		}, {myProp: [{myProp2: "myProp4"}, "myProp3"]}).any);
+		assert.equal(validol({
+			myProp: null
+		}, {myProp: [{myProp2: "myProp4"}, "myProp3"]}).result.myProp.myProp2.myProp4, undefined);
+		assert.equal(validol({
+			myProp: null
+		}, {myProp: [{myProp2: "myProp4"}, "myProp3"]}).result.myProp.myProp3, undefined);
+	});
+	it('should return object with error === false, all === false, any === false, result[props] === undefined when props argument === {myProp: [{myProp2: "myProp4"}, "myProp3"]} and object.myProp is not set', function() {
+		assert.isFalse(validol({}, {myProp: [{myProp2: "myProp4"}, "myProp3"]}).error);
+		assert.isFalse(validol({}, {myProp: [{myProp2: "myProp4"}, "myProp3"]}).all);
+		assert.isFalse(validol({}, {myProp: [{myProp2: "myProp4"}, "myProp3"]}).any);
+		assert.equal(validol({}, {myProp: [{myProp2: "myProp4"}, "myProp3"]}).result.myProp.myProp2.myProp4, undefined);
+		assert.equal(validol({}, {myProp: [{myProp2: "myProp4"}, "myProp3"]}).result.myProp.myProp3, undefined);
+	});
+
+	it('should return object with error === false, all === true, any === true when props argument === {myProp: [{myProp2: {myProp4: "myProp5"}}, "myProp3"]} and object.myProp and object.myProp.myProp2 and object.myProp.myProp3 and object.myProp2.myProp4 is set and object.myProp2.myProp4.myProp5 is set', function() {
+		assert.isFalse(validol({
+			myProp: {
+				myProp2: {
+					myProp4: {
+						myProp5: 5
+					}
+				},
+				myProp3: 3
+			}
+		}, {myProp: [{myProp2: {myProp4: "myProp5"}}, "myProp3"]}).error);
+		assert.isTrue(validol({
+			myProp: {
+				myProp2: {
+					myProp4: {
+						myProp5: 5
+					}
+				},
+				myProp3: 3
+			}
+		}, {myProp: [{myProp2: {myProp4: "myProp5"}}, "myProp3"]}).all);
+		assert.isTrue(validol({
+			myProp: {
+				myProp2: {
+					myProp4: {
+						myProp5: 5
+					}
+				},
+				myProp3: 3
+			}
+		}, {myProp: [{myProp2: {myProp4: "myProp5"}}, "myProp3"]}).any);
+		assert.equal(validol({
+			myProp: {
+				myProp2: {
+					myProp4: {
+						myProp5: 5
+					}
+				},
+				myProp3: 3
+			}
+		}, {myProp: [{myProp2: {myProp4: "myProp5"}}, "myProp3"]}).result.myProp.myProp2.myProp4.myProp5, 5);
+		assert.equal(validol({
+			myProp: {
+				myProp2: {
+					myProp4: {
+						myProp5: 5
+					}
+				},
+				myProp3: 3
+			}
+		}, {myProp: [{myProp2: {myProp4: "myProp5"}}, "myProp3"]}).result.myProp.myProp3, 3);
+	});
+	it('should return object with error === false, all === false, any === true when props argument === {myProp: [{myProp2: {myProp4: "myProp5"}}, "myProp3"]} and object.myProp and object.myProp.myProp2 and object.myProp.myProp3 is set and object.myProp.myProp2.myProp4 is not set and object.myProp.myProp2.myProp4.myProp5 is not set', function() {
+		assert.isFalse(validol({
+			myProp: {
+				myProp2: 2,
+				myProp3: 3
+			}
+		}, {myProp: [{myProp2: {myProp4: "myProp5"}}, "myProp3"]}).error);
+		assert.isFalse(validol({
+			myProp: {
+				myProp2: 2,
+				myProp3: 3
+			}
+		}, {myProp: [{myProp2: {myProp4: "myProp5"}}, "myProp3"]}).all);
+		assert.isTrue(validol({
+			myProp: {
+				myProp2: 2,
+				myProp3: 3
+			}
+		}, {myProp: [{myProp2: {myProp4: "myProp5"}}, "myProp3"]}).any);
+		assert.equal(validol({
+			myProp: {
+				myProp2: 2,
+				myProp3: 3
+			}
+		}, {myProp: [{myProp2: {myProp4: "myProp5"}}, "myProp3"]}).result.myProp.myProp2.myProp4.myProp5, undefined);
+		assert.equal(validol({
+			myProp: {
+				myProp2: 2,
+				myProp3: 3
+			}
+		}, {myProp: [{myProp2: {myProp4: "myProp5"}}, "myProp3"]}).result.myProp.myProp3, 3);
+	});
+	it('should return object with error === false, all === false, any === true when props argument === {myProp: [{myProp2: {myProp4: "myProp5"}}, "myProp3"]} and object.myProp and object.myProp.myProp2 and object.myProp.myProp3 is set and object.myProp.myProp2.myProp4 is set and object.myProp.myProp2.myProp4.myProp5 is not set', function() {
+		assert.isFalse(validol({
+			myProp: {
+				myProp2: {
+					myProp4: 4
+				},
+				myProp3: 3
+			}
+		}, {myProp: [{myProp2: {myProp4: "myProp5"}}, "myProp3"]}).error);
+		assert.isFalse(validol({
+			myProp: {
+				myProp2: {
+					myProp4: 4
+				},
+				myProp3: 3
+			}
+		}, {myProp: [{myProp2: {myProp4: "myProp5"}}, "myProp3"]}).all);
+		assert.isTrue(validol({
+			myProp: {
+				myProp2: {
+					myProp4: 4
+				},
+				myProp3: 3
+			}
+		}, {myProp: [{myProp2: {myProp4: "myProp5"}}, "myProp3"]}).any);
+		assert.equal(validol({
+			myProp: {
+				myProp2: {
+					myProp4: 4
+				},
+				myProp3: 3
+			}
+		}, {myProp: [{myProp2: {myProp4: "myProp5"}}, "myProp3"]}).result.myProp.myProp2.myProp4.myProp5, undefined);
+		assert.equal(validol({
+			myProp: {
+				myProp2: {
+					myProp4: 4
+				},
+				myProp3: 3
+			}
+		}, {myProp: [{myProp2: {myProp4: "myProp5"}}, "myProp3"]}).result.myProp.myProp2.myProp4, 4);
+		assert.equal(validol({
+			myProp: {
+				myProp2: {
+					myProp4: 4
+				},
+				myProp3: 3
+			}
+		}, {myProp: [{myProp2: {myProp4: "myProp5"}}, "myProp3"]}).result.myProp.myProp3, 3);
+	});
+	it('should return object with error === false, all === false, any === true when props argument ===  {myProp: [{myProp2: {myProp4: "myProp5"}}, "myProp3"]} and object.myProp is set and object.myProp.myProp2 is not set and object.myProp.myProp3 is not set and object.myProp.myProp2.myProp4 is not set and object.myProp.myProp2.myProp4.myProp5 is not set', function() {
+		assert.isFalse(validol({
+			myProp: 1
+		}, {myProp: [{myProp2: {myProp4: "myProp5"}}, "myProp3"]}).error);
+		assert.isFalse(validol({
+			myProp: 1
+		}, {myProp: [{myProp2: {myProp4: "myProp5"}}, "myProp3"]}).all);
+		assert.isTrue(validol({
+			myProp: 1
+		}, {myProp: [{myProp2: {myProp4: "myProp5"}}, "myProp3"]}).any);
+		assert.equal(validol({
+			myProp: 1
+		}, {myProp: [{myProp2: {myProp4: "myProp5"}}, "myProp3"]}).result.myProp, 1);
+		assert.equal(validol({
+			myProp: 1
+		}, {myProp: [{myProp2: {myProp4: "myProp5"}}, "myProp3"]}).result.myProp.myProp2.myProp4.myProp5, undefined);
+		assert.equal(validol({
+			myProp: 1
+		}, {myProp: [{myProp2: {myProp4: "myProp5"}}, "myProp3"]}).result.myProp.myProp3, undefined);
+	});
+	it('should return object with error === false, all === false, any === true when props argument ===  {myProp: [{myProp2: {myProp4: "myProp5"}}, "myProp3"]} and object.myProp === undefined and object.myProp.myProp2 is not set and object.myProp.myProp3 is not set and object.myProp.myProp2.myProp4 is not set and object.myProp.myProp2.myProp4.myProp5 is not set', function() {
+		assert.isFalse(validol({
+			myProp: undefined
+		}, {myProp: [{myProp2: {myProp4: "myProp5"}}, "myProp3"]}).error);
+		assert.isFalse(validol({
+			myProp: undefined
+		}, {myProp: [{myProp2: {myProp4: "myProp5"}}, "myProp3"]}).all);
+		assert.isFalse(validol({
+			myProp: undefined
+		}, {myProp: [{myProp2: {myProp4: "myProp5"}}, "myProp3"]}).any);
+		assert.equal(validol({
+			myProp: undefined
+		}, {myProp: [{myProp2: {myProp4: "myProp5"}}, "myProp3"]}).result.myProp.myProp2.myProp4.myProp5, undefined);
+		assert.equal(validol({
+			myProp: undefined
+		}, {myProp: [{myProp2: {myProp4: "myProp5"}}, "myProp3"]}).result.myProp.myProp3, undefined);
+	});
+	it('should return object with error === false, all === false, any === true when props argument ===  {myProp: [{myProp2: {myProp4: "myProp5"}}, "myProp3"]} and object.myProp === null and object.myProp.myProp2 is not set and object.myProp.myProp3 is not set and object.myProp.myProp2.myProp4 is not set and object.myProp.myProp2.myProp4.myProp5 is not set', function() {
+		assert.isFalse(validol({
+			myProp: null
+		}, {myProp: [{myProp2: {myProp4: "myProp5"}}, "myProp3"]}).error);
+		assert.isFalse(validol({
+			myProp: null
+		}, {myProp: [{myProp2: {myProp4: "myProp5"}}, "myProp3"]}).all);
+		assert.isTrue(validol({
+			myProp: null
+		}, {myProp: [{myProp2: {myProp4: "myProp5"}}, "myProp3"]}).any);
+		assert.equal(validol({
+			myProp: null
+		}, {myProp: [{myProp2: {myProp4: "myProp5"}}, "myProp3"]}).result.myProp.myProp2.myProp4.myProp5, undefined);
+		assert.equal(validol({
+			myProp: null
+		}, {myProp: [{myProp2: {myProp4: "myProp5"}}, "myProp3"]}).result.myProp.myProp3, undefined);
+	});
+	it('should return object with error === false, all === false, any === false, result[props] === undefined when props argument ===  {myProp: [{myProp2: {myProp4: "myProp5"}}, "myProp3"]} and object.myProp is not set', function() {
+		assert.isFalse(validol({}, {myProp: [{myProp2: {myProp4: "myProp5"}}, "myProp3"]}).error);
+		assert.isFalse(validol({}, {myProp: [{myProp2: {myProp4: "myProp5"}}, "myProp3"]}).all);
+		assert.isFalse(validol({}, {myProp: [{myProp2: {myProp4: "myProp5"}}, "myProp3"]}).any);
+		assert.equal(validol({}, {myProp: [{myProp2: {myProp4: "myProp5"}}, "myProp3"]}).result.myProp.myProp2.myProp4.myProp5, undefined);
+		assert.equal(validol({}, {myProp: [{myProp2: {myProp4: "myProp5"}}, "myProp3"]}).result.myProp.myProp3, undefined);
+	});
 });
