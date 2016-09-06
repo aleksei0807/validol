@@ -15,7 +15,7 @@ function validationProp(object, prop) {
 	return false;
 }
 
-function validationArrayProps(object, props, propsName = 'props') {
+function validationArrayProps(object, props, propsName = 'props', defaultValue) {
 	const result = {
 		error: false,
 		result: object,
@@ -28,7 +28,7 @@ function validationArrayProps(object, props, propsName = 'props') {
 			if (validationProp(object, prop)) {
 				result.any = true;
 			} else {
-				result.result[prop] = undefined;
+				result.result[prop] = defaultValue;
 				result.all = false;
 			}
 		}
@@ -36,7 +36,8 @@ function validationArrayProps(object, props, propsName = 'props') {
 			const localResult = validationObjectProps(
 				result.result,
 				prop,
-				propsName
+				propsName,
+				defaultValue
 			);
 			if (localResult.all === false) {
 				result.all = false;
@@ -53,7 +54,7 @@ function validationArrayProps(object, props, propsName = 'props') {
 	return result;
 }
 
-function validationObjectProps(object, props, propsName = 'props'): Result {
+function validationObjectProps(object, props, propsName = 'props', defaultValue): Result {
 	const result: Result = {
 		error: false,
 		result: object,
@@ -90,7 +91,7 @@ function validationObjectProps(object, props, propsName = 'props'): Result {
 						} else {
 							result.result[key] = Object(object[key]);
 						}
-						result.result[key][props[key]] = undefined;
+						result.result[key][props[key]] = defaultValue;
 						return true;
 					}
 					if (validationProp(object[key], props[key])) {
@@ -99,7 +100,7 @@ function validationObjectProps(object, props, propsName = 'props'): Result {
 					}
 					result.all = false;
 					result.result[key] = Object(object[key]);
-					result.result[key][props[key]] = undefined;
+					result.result[key][props[key]] = defaultValue;
 					return true;
 				}
 
@@ -116,7 +117,8 @@ function validationObjectProps(object, props, propsName = 'props'): Result {
 					const localResult = validationArrayProps(
 						result.result[key],
 						props[key],
-						`${propsName}.${key}`
+						`${propsName}.${key}`,
+						defaultValue
 					);
 					if (localResult.error !== false) {
 						result.error = localResult.error;
@@ -145,7 +147,8 @@ function validationObjectProps(object, props, propsName = 'props'): Result {
 					const localResult = validationObjectProps(
 						result.result[key],
 						props[key],
-						`${propsName}.${key}`
+						`${propsName}.${key}`,
+						defaultValue
 					);
 					if (localResult.all === false) {
 						result.all = false;
@@ -167,11 +170,16 @@ function validationObjectProps(object, props, propsName = 'props'): Result {
 						result.result[key] = Object(object[key]);
 					}
 				}
+				if (typeof props[key] === 'string' || typeof props[key] === 'number') {
+					result.result[key][props[key]] = defaultValue;
+					return true;
+				}
 				if (props[key] instanceof Array) {
 					result.result[key] = validationArrayProps(
 						result.result[key],
 						props[key],
-						`${propsName}.${key}`
+						`${propsName}.${key}`,
+						defaultValue
 					).result;
 					return true;
 				}
@@ -180,7 +188,8 @@ function validationObjectProps(object, props, propsName = 'props'): Result {
 					const localResult = validationObjectProps(
 						result.result[key],
 						props[key],
-						`${propsName}.${key}`
+						`${propsName}.${key}`,
+						defaultValue
 					);
 					if (localResult.all === false) {
 						result.all = false;
@@ -200,7 +209,7 @@ function validationObjectProps(object, props, propsName = 'props'): Result {
 	return result;
 }
 
-function validol(object: Object, props: Props = ''): Result {
+function validol(object: Object, props: Props = '', defaultValue: any = undefined): Result {
 	let result: Result = {
 		error: false,
 		result: object,
@@ -231,16 +240,16 @@ function validol(object: Object, props: Props = ''): Result {
 			result.any = true;
 			return result;
 		}
-		result.result[props] = undefined;
+		result.result[props] = defaultValue;
 		return result;
 	}
 
 	if (props instanceof Array) {
-		return validationArrayProps(object, props);
+		return validationArrayProps(object, props, 'props', defaultValue);
 	}
 
 	if (typeof props === 'object' && !(props instanceof Array)) {
-		result = validationObjectProps(object, props);
+		result = validationObjectProps(object, props, 'props', defaultValue);
 		return result;
 	}
 
