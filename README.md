@@ -1,5 +1,8 @@
 [![Build Status](https://travis-ci.org/aleksei0807/validol.svg?branch=master)](https://travis-ci.org/aleksei0807/validol)
 [![Coverage Status](https://coveralls.io/repos/github/aleksei0807/validol/badge.svg?branch=master)](https://coveralls.io/github/aleksei0807/validol?branch=master)
+[![npm version](https://badge.fury.io/js/validol.svg)](https://badge.fury.io/js/validol)
+
+[![NPM](https://nodei.co/npm/validol.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/validol/)
 # Validol
 
 Validol is an util that validates that object has defined props.
