@@ -23,12 +23,12 @@ function validationArrayProps(object, props) {
 		any: false,
 	};
 
-	props.map(prop => {
+	props.forEach(prop => {
 		if (typeof prop === 'string' || typeof prop === 'number') {
 			if (validationProp(object, prop)) {
 				result.any = true;
 			} else {
-				result.result = { ...object, ...{ [prop]: undefined } };
+				result.result[prop] = undefined;
 				result.all = false;
 			}
 		}
@@ -85,8 +85,14 @@ function validationObjectProps(object, props, propsName = 'props'): Result {
 				}
 
 				if (props[key] instanceof Array) {
-					if (typeof result.result[key] !== 'object' || result.result[key] === null) {
-						result.result[key] = Object();
+					if (typeof result.result[key] !== 'object'
+					|| result.result[key] !== object[key]
+					|| result.result[key] === null) {
+						if (object[key] === null || object[key] === undefined) {
+							result.result[key] = Object();
+						} else {
+							result.result[key] = Object(object[key]);
+						}
 					}
 					const localResult = validationArrayProps(result.result[key], props[key]);
 					if (localResult.error !== false) {
@@ -106,20 +112,22 @@ function validationObjectProps(object, props, propsName = 'props'): Result {
 				// if object
 			} else {
 				result.all = false;
-				if (typeof result.result[key] !== 'object' || result.result[key] === null) {
-					result.result[key] = Object();
-				}
-				if (typeof props[key] !== 'object' || props[key] === null) {
-					result.result[key][props[key]] = undefined;
-				} else {
-					if (props[key] instanceof Array) {
-						result.result[key] = validationArrayProps(result.result[key], props[key]).result;
-						return true;
+				if (typeof result.result[key] !== 'object'
+				|| result.result[key] !== object[key]
+				|| result.result[key] === null) {
+					if (object[key] === null || object[key] === undefined) {
+						result.result[key] = Object();
+					} else {
+						result.result[key] = Object(object[key]);
 					}
-					// if object
-
+				}
+				if (props[key] instanceof Array) {
+					result.result[key] = validationArrayProps(result.result[key], props[key]).result;
 					return true;
 				}
+				// if object
+
+				return true;
 			}
 		}
 		return true;

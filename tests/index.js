@@ -230,6 +230,9 @@ describe('validol', function() {
 		}, {myProp: ["myProp2", "myProp3"]}).any);
 		assert.equal(validol({
 			myProp: 1
+		}, {myProp: ["myProp2", "myProp3"]}).result.myProp, 1);
+		assert.equal(validol({
+			myProp: 1
 		}, {myProp: ["myProp2", "myProp3"]}).result.myProp.myProp2, undefined);
 		assert.equal(validol({
 			myProp: 1
