@@ -68,9 +68,15 @@ function validationObjectProps(object, props, propsName = 'props'): Result {
 				}
 
 				if (typeof props[key] === 'string' || typeof props[key] === 'number') {
-					if (object[key] === undefined || object[key] === null) {
+					if (typeof result.result[key] !== 'object'
+					|| (result.result[key] !== object[key] && result.result[key] !== undefined)
+					|| result.result[key] === null) {
 						result.all = false;
-						result.result[key] = Object(object[key]);
+						if (object[key] === null || object[key] === undefined) {
+							result.result[key] = Object();
+						} else {
+							result.result[key] = Object(object[key]);
+						}
 						result.result[key][props[key]] = undefined;
 						return true;
 					}
