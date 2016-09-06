@@ -1,0 +1,18 @@
+{
+  "env": {"browser": true, "commonjs": true, node: true},
+  "extends": "airbnb",
+  "parser": "babel-eslint",
+  "rules": {
+    "indent": [2, "tab"],
+    "import/no-unresolved": [2, {"commonjs": true, "amd": true}],
+    "new-cap": ["error", { "capIsNew": false }],
+    "react/prop-types": 0,
+    "react/jsx-indent": [2, "tab"],
+    "react/jsx-indent-props": [2, "tab"],
+    "react/jsx-closing-bracket-location": [1, {selfClosing: 'props-aligned', nonEmpty: 'after-props'}],
+    "no-trailing-spaces": ["error", { "skipBlankLines": true }]
+  },
+  "settings": {
+    "import/ignore": "node_modules"
+  }
+}
