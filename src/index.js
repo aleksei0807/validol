@@ -76,11 +76,6 @@ function validationObjectProps(object, props, propsName = 'props', defaultValue)
 					return false;
 				}
 
-				if (props[key] === '') {
-					result.all = false;
-					return true;
-				}
-
 				if (typeof props[key] === 'string' || typeof props[key] === 'number') {
 					if (typeof result.result[key] !== 'object'
 					|| result.result[key] !== object[key]

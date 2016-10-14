@@ -112,12 +112,12 @@ describe('validol', function() {
 			myProp: {
 				myProp2: 2
 			}
-		}, {myProp: false}).error instanceof Error);
+		}, {myProp: ""}).error instanceof Error);
 		assert.equal(validol({
 			myProp: {
 				myProp2: 2
 			}
-		}, {myProp: false}).error.message, 'props.myProp argument is not valid!');
+		}, {myProp: ""}).error.message, 'props.myProp argument is not valid!');
 		assert.isFalse(validol({
 			myProp: {
 				myProp2: 2
