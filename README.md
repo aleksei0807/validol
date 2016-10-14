@@ -25,6 +25,28 @@ Validol is an util that validates that object has defined props.
 }
 ```
 
+**The default object mutates validol**
+
+if you do not want to mutate the object, it is necessary to add a "mutation: false" in settings.
+
+eg:
+
+```javascript
+var obj = {
+	myProp: {
+		myProp3: 3
+	}
+};
+validol(obj, {
+	myProp: [
+		{
+			myProp2: "myProp4"
+		},
+		"myProp3"
+	]
+}, undefined, { mutation: false });
+```
+
 ## Examples
 
 ```javascript
