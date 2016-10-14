@@ -204,8 +204,18 @@ function validationObjectProps(object, props, propsName = 'props', defaultValue)
 	return result;
 }
 
-function validol(originalObject: Object, props: Props = '', defaultValue: any = undefined): Result {
-	const object = Object.assign({}, originalObject);
+function validol(
+	originalObject: Object,
+	props: Props = '',
+	defaultValue: any = undefined,
+	settings: ?Object,
+): Result {
+	let object = {};
+	if (settings && settings.mutation === false) {
+		object = JSON.parse(JSON.stringify(originalObject));
+	} else {
+		object = originalObject;
+	}
 
 	let result: Result = {
 		error: false,

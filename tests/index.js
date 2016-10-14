@@ -705,4 +705,25 @@ describe('validol', function() {
 		assert.equal(validol({}, {myProp: [{myProp2: {myProp4: "myProp5"}}, "myProp3"]}, {a: 1}).result.myProp.myProp2.myProp4.myProp5.a, 1);
 		assert.equal(validol({}, {myProp: [{myProp2: {myProp4: "myProp5"}}, "myProp3"]}, {a: 1}).result.myProp.myProp3.a, 1);
 	});
+	it('should mutation object', function() {
+		var obj = {
+			myProp: {
+				myProp3: 3,
+			}
+		};
+		validol(obj, {myProp: [{myProp2: {myProp4: "myProp5"}}, "myProp3"]}, 1);
+
+		assert.equal(obj.myProp.myProp2.myProp4.myProp5, 1);
+	});
+
+	it('should not mutation object', function() {
+		var obj1 = {
+			myProp: {
+				myProp3: 3,
+			}
+		};
+		validol(obj1, {myProp: [{myProp2: {myProp4: "myProp5"}}, "myProp3"]}, 1, {mutation: false});
+
+		assert.equal(obj1.myProp.myProp2, undefined);
+	});
 });

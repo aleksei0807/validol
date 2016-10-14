@@ -12,6 +12,7 @@ Validol is an util that validates that object has defined props.
 - object `Object`
 - props `string || number || Object || Array`
 - ?defaultValue
+- ?settings `Object`
 
 ## Result
 
@@ -129,6 +130,39 @@ returned: {
 	all: true,
 	any: true
 }
+*/
+```
+
+```javascript
+var obj = {
+	myProp: {
+		myProp3: 3
+	}
+};
+validol(obj, {
+	myProp: [
+		{
+			myProp2: "myProp4"
+		},
+		"myProp3"
+	]
+}, undefined, { mutation: false });
+/*
+returned: {
+	error: false,
+	result: {
+		myProp: {
+			myProp2: {
+				myProp4: 4
+			},
+			myProp3: 3
+		}
+	},
+	all: true,
+	any: true
+}
+
+and not mutation original object!
 */
 ```
 
