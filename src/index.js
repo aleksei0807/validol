@@ -209,7 +209,9 @@ function validationObjectProps(object, props, propsName = 'props', defaultValue)
 	return result;
 }
 
-function validol(object: Object, props: Props = '', defaultValue: any = undefined): Result {
+function validol(originalObject: Object, props: Props = '', defaultValue: any = undefined): Result {
+	const object = Object.assign({}, originalObject);
+
 	let result: Result = {
 		error: false,
 		result: object,
@@ -217,7 +219,7 @@ function validol(object: Object, props: Props = '', defaultValue: any = undefine
 		any: false,
 	};
 
-	if (object === undefined || object === null) {
+	if (originalObject === undefined || originalObject === null) {
 		result.error = new Error('object argument is not valid!');
 		return result;
 	}

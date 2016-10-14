@@ -1,6 +1,6 @@
 {
   "name": "validol",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "util for validation that object has defined props",
   "main": "./lib/index.js",
   "scripts": {

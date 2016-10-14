@@ -107,6 +107,50 @@ describe('validol', function() {
 			}
 		}, {myProp: "myProp2"}).result.myProp.myProp2, 2);
 	});
+	it('should return object with error === false, all === false, any === true when props argument === {myProp: ""} and object.myProp is set', function() {
+		assert.isTrue(validol({
+			myProp: {
+				myProp2: 2
+			}
+		}, {myProp: false}).error instanceof Error);
+		assert.equal(validol({
+			myProp: {
+				myProp2: 2
+			}
+		}, {myProp: false}).error.message, 'props.myProp argument is not valid!');
+		assert.isFalse(validol({
+			myProp: {
+				myProp2: 2
+			}
+		}, {myProp: ""}).all);
+		assert.isTrue(validol({
+			myProp: {
+				myProp2: 2
+			}
+		}, {myProp: ""}).any);
+	});
+	it('should return object with error === false, all === false, any === true when props argument === {myProp: true} and object.myProp is set', function() {
+		assert.isTrue(validol({
+			myProp: {
+				myProp2: 2
+			}
+		}, {myProp: false}).error instanceof Error);
+		assert.equal(validol({
+			myProp: {
+				myProp2: 2
+			}
+		}, {myProp: false}).error.message, 'props.myProp argument is not valid!');
+		assert.isFalse(validol({
+			myProp: {
+				myProp2: 2
+			}
+		}, {myProp: false}).all);
+		assert.isTrue(validol({
+			myProp: {
+				myProp2: 2
+			}
+		}, {myProp: false}).any);
+	});
 	it('should return object with error === false, all === false, any === true when props argument === {myProp: "myProp2"} and object.myProp is set and object.myProp.myProp2 is not set', function() {
 		assert.isFalse(validol({
 			myProp: 1
