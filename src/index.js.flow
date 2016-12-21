@@ -1,0 +1,19 @@
+/* @flow */
+/* eslint-disable no-unused-vars */
+type Props = string | number | Array<string | Object> | Object;
+
+type Result = {
+	error: boolean | Error;
+	result: Object;
+	all: boolean;
+	any: boolean;
+}
+
+declare function validol(
+	originalObject: Object,
+	props: Props,
+	defaultValue: any,
+	settings: ?Object
+): Result;
+
+module.exports = validol;

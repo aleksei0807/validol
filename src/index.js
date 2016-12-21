@@ -1,12 +1,5 @@
 // @flow
-
-type Props = string | number | Array<string | Object> | Object;
-type Result = {
-	error: boolean | Error,
-	result: Object,
-	all: boolean,
-	any: boolean
-}
+import type { Props, Result } from './types';
 
 function validationProp(object, prop) {
 	if (object[prop] !== undefined) {
@@ -23,7 +16,7 @@ function validationArrayProps(object, props, propsName = 'props', defaultValue) 
 		any: false,
 	};
 
-	props.forEach(prop => {
+	props.forEach((prop) => {
 		if (typeof prop === 'string' || typeof prop === 'number') {
 			if (validationProp(object, prop)) {
 				result.any = true;
@@ -33,12 +26,14 @@ function validationArrayProps(object, props, propsName = 'props', defaultValue) 
 			}
 		}
 		if (typeof prop === 'object' && prop !== null) {
+			/* eslint-disable no-use-before-define */
 			const localResult = validationObjectProps(
 				result.result,
 				prop,
 				propsName,
 				defaultValue
 			);
+			/* eslint-enable no-use-before-define */
 			if (localResult.all === false) {
 				result.all = false;
 			}
@@ -62,7 +57,7 @@ function validationObjectProps(object, props, propsName = 'props', defaultValue)
 		any: false,
 	};
 
-	Object.keys(props).forEach(key => {
+	Object.keys(props).forEach((key) => {
 		if ({}.hasOwnProperty.call(props, key)) {
 			if (validationProp(object, key)) {
 				result.any = true;
@@ -208,7 +203,7 @@ function validol(
 	originalObject: Object,
 	props: Props = '',
 	defaultValue: any = undefined,
-	settings: ?Object,
+	settings: ?Object
 ): Result {
 	let object = {};
 	if (settings && settings.mutation === false) {
